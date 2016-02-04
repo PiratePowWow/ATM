@@ -1,5 +1,6 @@
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -11,7 +12,7 @@ public class ATM {
     public static void main(String[] args) throws Exception {
         Methods newCustomer = new Methods();
         newCustomer.enterName();
-        newCustomer.enterSelection();
+        //newCustomer.enterSelection();
 //        int balance = 100;
 //        System.out.println("Hey, I'm ATM. What is your name?");
 //        String name = scanner.nextLine();
