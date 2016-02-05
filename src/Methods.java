@@ -25,17 +25,17 @@ public class Methods {
                     System.out.println("How much would you like to deposit?");
                     double deposit = Double.valueOf(ATM.scanner.nextLine());
                     accounts.put(name, deposit);
-                    System.out.println("$" + deposit + " has been deposited in your account. Your new balance is $" + accounts.get(name) + ".");
+                    System.out.println("$" + String.format("%.2f", deposit) + " has been deposited in your account. Your new balance is $" + String.format("%.2f", accounts.get(name)) + ".");
                     enterSelection(name);
                 }
                 else {
-                    System.out.println("Since you do not have and do not wish to make a deposit, this session is terminated. Please come again.");
-                    System.exit(0);
+                    System.out.println("Since you do not have a balance and do not wish to make a deposit, this session is terminated. Please come again.");
+                    cancel();
                 }
             }
             else {
                 System.out.println("Since you do not have and do not wish to create an account, this session is terminated. Please come again.");
-                System.exit(0);
+                cancel();
             }
         }
     }
@@ -48,21 +48,40 @@ public class Methods {
         System.out.println("4: Cancel");
 
         String selection = ATM.scanner.nextLine();
-        if (selection.equals("1")) {
-            checkBalance(name);
+
+        switch (selection) {
+            case ("1"):
+                checkBalance(name);
+                break;
+            case ("2"):
+                withdraw(name);
+                break;
+            case ("3"):
+                deleteAccount(name);
+                break;
+            case ("4"):
+                cancel();
+                break;
+            default:
+                System.out.println(("You have entered an invalid selection."));
+                enterSelection(name);
+                break;
         }
-        else if (selection.equals("2")){
-            withdraw(name);
-        }
-        else if (selection.equals("4")){
-            cancel();
-        }
-        else if (selection.equals("3")){
-            deleteAccount(name);
-        }
-        else {
-            throw new Exception("You have entered an invalid selection.");
-        }
+//        if (selection.equals("1")) {
+//            checkBalance(name);
+//        }
+//        else if (selection.equals("2")){
+//            withdraw(name);
+//        }
+//        else if (selection.equals("4")){
+//            cancel();
+//        }
+//        else if (selection.equals("3")){
+//            deleteAccount(name);
+//        }
+//        else {
+//            throw new Exception("You have entered an invalid selection.");
+//        }
     }
 
     public void deleteAccount(String name) throws Exception {
@@ -72,8 +91,8 @@ public class Methods {
     }
 
     public void checkBalance(String name) throws Exception {
-        System.out.println("You have chosen to check your balance. Your balance is $" + accounts.get(name) + ".");
-        System.out.println("Would you like to make another transaction?");
+        System.out.println("You have chosen to check your balance. Your balance is $" + String.format("%.2f", accounts.get(name)) + ".");
+        System.out.println("Would you like to make another transaction? [y/n]");
         String response = ATM.scanner.nextLine();
         if (response.equals("y")){
             enterSelection(name);
@@ -85,19 +104,21 @@ public class Methods {
 
     public void withdraw(String name) throws Exception {
         System.out.println("You have chosen to withdraw funds. How much would you like to withdraw?");
-        double withdrawal = ATM.scanner.nextDouble();
+        double withdrawal = Double.valueOf(ATM.scanner.nextLine());
         if (withdrawal <= accounts.get(name)) {
-            System.out.println("Please collect your $" + withdrawal + " below.");
+            System.out.println("Please collect your $" + String.format("%.2f", withdrawal) + " below.");
             accounts.put(name, accounts.get(name) - withdrawal);
             System.out.println("Your new balance is $" + accounts.get(name) + ".");
             enterSelection(name);
         } else {
-            throw new Exception("You do not have that much in your account. Have a nice day and please come again.");
+            System.out.println("You do not have that much in your account. Have a nice day and please come again.");
+            enterName();
         }
     }
 
-    public void cancel(){
+    public void cancel() throws Exception {
         System.out.println("You have chosen to cancel this session. Have a nice day and please come again.");
+        enterName();
     }
 
 }
